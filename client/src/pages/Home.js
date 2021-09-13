@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import LoginMenu from "../components/LoginMenu";
 
 import "./Home.css";
-
 
 export function Home() {
 	const [message, setMessage] = useState("Loading...");
@@ -29,12 +28,11 @@ export function Home() {
 				<h1 className="message" data-qa="message">
 					{message}
 				</h1>
-				<select name="dropdown" id="dropdown">
-					<Link to="/student/login"><option value="student">Student</option></Link>
-				</select>
 			</div>
+			<LoginMenu />
 		</main>
 	);
 }
 
 export default Home;
+
