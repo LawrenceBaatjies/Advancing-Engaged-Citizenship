@@ -3,5 +3,17 @@
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": true
 	},
-	"files.eol": "\n"
+	"files.eol": "\n",
+	"sqltools.connections": [
+		{
+			"previewLimit": 50,
+			"server": "localhost",
+			"port": 5432,
+			"askForPassword": true,
+			"driver": "PostgreSQL",
+			"name": "final_project_db",
+			"database": "final_project_db",
+			"username": "postgres"
+		}
+	]
 }
