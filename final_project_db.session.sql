@@ -48,8 +48,9 @@ SELECT *
 CREATE TABLE projects (
 
 id            	    SERIAL PRIMARY KEY,  
+admin_id            INT NOT NULL,
 student_id          INT NOT NULL,
-advisor_id          INT NOT NULL,
+mentor_id           INT NOT NULL,
 project_name        VARCHAR(255) NOT NULL,
 project_status      VARCHAR(255) NOT NULL
 
