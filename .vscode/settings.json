@@ -15,5 +15,8 @@
 			"database": "final_project_db",
 			"username": "postgres"
 		}
+	],
+	"cSpell.words": [
+		"Millis"
 	]
 }
