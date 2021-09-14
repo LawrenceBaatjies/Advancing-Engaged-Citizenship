@@ -1,6 +1,6 @@
 CREATE 
     DATABASE 
-        advancing_engaged_citizenship;
+        final_project_db;
 
 CREATE TABLE admin (
 id             SERIAL PRIMARY KEY,
