@@ -1,6 +1,7 @@
 import { Pool } from "pg";
-
-const dbUrl = process.env.DATABASE_URL || "postgres://postgres:kali001@localhost:5432/final_project_db";
+require("dotenv").config();
+// "postgres://postgres:kali001@localhost:5432/final_project_db";
+const dbUrl = process.env.DATABASE_URL || `postgresql://${process.env.PG_USERNAME}:${process.env.PG_PASSWORD}@${process.env.PG_HOST}/${process.env.PG_DB}`;
 
 const pool = new Pool({
 	connectionString: dbUrl,
