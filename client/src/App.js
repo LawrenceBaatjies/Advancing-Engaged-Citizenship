@@ -105,6 +105,7 @@ const App = () => {
 								)
 							}
 						/>
+						<Route path="/*" render={(props) => <Home {...props} />} />
 					</Switch>
 				</div>
 			</Router>
