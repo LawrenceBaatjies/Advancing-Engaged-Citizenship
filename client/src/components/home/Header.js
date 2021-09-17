@@ -15,6 +15,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import React, { useState, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { flexbox } from "@mui/system";
+import { styled } from "@mui/material/styles";
 
 import LOGO_ICON from "../../assets/images/home_logo.jpg";
 import HEADERS_DATA from "./headers_data";
@@ -246,7 +247,7 @@ export default function Header() {
 		return (
 			<Box sx={{ marginLeft: "1rem", marginRight: "1rem" }}>
 				<Typography >
-					Advanced Engaged Citizenship
+					Advancing Engaged Citizenship
 				</Typography>
 			</Box>
 		);
@@ -257,7 +258,7 @@ export default function Header() {
 			<Stack
 				spacing={2}
 				direction={{ xs: "column", sm: "row" }}
-				sx={{ marginLeft: "1rem", marginRight: "1rem" }}
+				sx={{ marginLeft: "1rem", marginRight: "1rem", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center" }}
 				divider={
 					<Divider
 						orientation="vertical"
@@ -284,36 +285,6 @@ export default function Header() {
 			</Stack>
 		);
 	};
-/*
-	const LogInButton = () => {
-		return (
-			<Box
-				sx={{
-					bgcolor: "primary.white",
-					marginRight: "1rem",
-					marginLeft:"0px",
-					borderRadius: "4px",
-					display: "flex",
-					flexDirection: "row",
-					padding: "0.2rem",
-					justifyContent: "center",
-					alignItems: "center",
-				}}
-			>
-				<Box
-					component="img"
-					sx={{ height: "1.2rem", marginLeft: "0.3rem" }}
-					src={LOGIN_ICON}
-					alt="projects"
-				></Box>
-				<Button style={{ textTransform: "none", marginRight: "0.3rem" }}>
-					<Typography sx={{ fontWeight: 300 }}>Log In</Typography>
-				</Button>
-
-			</Box>
-		);
-	};
-	*/
 
 	const LogoImage = () => {
 		return (
@@ -323,9 +294,14 @@ export default function Header() {
 		);
 	};
 
+	const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
+
 	return (
 		<header>
-			<AppBar>{mobileView ? displayMobile() : displayDesktop()}</AppBar>
+			<AppBar sx={{ position: "fixed", top: "0", width: "100%" }}>
+				{mobileView ? displayMobile() : displayDesktop()}
+			</AppBar>
+			<Offset />
 		</header>
 	);
 }

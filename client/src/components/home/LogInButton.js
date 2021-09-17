@@ -2,6 +2,7 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import Avatar from "@mui/material/Avatar";
 import Fade from "@mui/material/Fade";
 import { withRouter } from "react-router-dom";
 
@@ -41,13 +42,13 @@ function LOgInButton(props) {
 					onClick={() => props.history.push("/student/login")}
 					sx={{ color: "primary.main" }}
 				>
-					Student
+					<Avatar sx={{ color: "primary.main", bgcolor: "primary.white", marginRight: "0.3rem" }} /> Student
 				</MenuItem>
 				<MenuItem
 					onClick={() => props.history.push("/mentor/login")}
 					sx={{ color: "primary.main" }}
 				>
-					Advisor
+					<Avatar sx={{ color: "primary.main", bgcolor: "primary.white", marginRight: "0.3rem" }} />  Advisor
 				</MenuItem>
 			</Menu>
 		</div>

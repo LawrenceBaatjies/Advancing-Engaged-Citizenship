@@ -20,11 +20,11 @@ const headersData = [
 		href: "/register",
 		id: 4,
 	},
-	/*{
-		label: "Log In",
-		href: "/login",
+	{
+		label: "About Us",
+		href: "/about",
 		id: 5,
-	},*/
+	},
 ];
 
 export default headersData;
