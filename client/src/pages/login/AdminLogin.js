@@ -59,7 +59,6 @@ const AdminLogin = ({ setAuth }) => {
 		return (
 		<div>
 				{admin.map((admin) => {
-				console.log(admin);
 				return (
 					<>
 						<Typography variant="body2" color="text.secondary" align="center" {...props}>
