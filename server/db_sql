@@ -1,0 +1,31 @@
+CREATE TABLE admin (
+    id                   SERIAL PRIMARY KEY,
+    admin_id             INT NOT NULL ,
+    admin_name           VARCHAR(63) NOT NULL,
+    admin_phone          VARCHAR(15)  NOT NULL,
+    admin_email          VARCHAR(63) NOT NULL,
+    admin_password       VARCHAR(8) NOT NULL UNIQUE
+);
+
+
+
+CREATE  TABLE  mentor(
+	id                      SERIAL PRIMARY KEY,            
+    mentor_id               INT NOT NULL ,
+    mentor_name         	VARCHAR(63) NOT NULL UNIQUE,
+    mentor_phone  	        VARCHAR(15) NOT NULL,
+    mentor_email          	VARCHAR(63) NOT NULL,
+    mentor_password       	VARCHAR(8) NOT NULL UNIQUE
+);
+
+
+
+CREATE TABLE students (
+    id                           SERIAL PRIMARY KEY,
+    student_id        	         INT NOT NULL ,
+    student_name 		         VARCHAR(63) NOT NULL,
+    student_surname              VARCHAR(63) NOT NULL,
+    student_phone                VARCHAR(15)  NOT NULL,
+    student_email                VARCHAR(63) NOT NULL,
+    student_password             VARCHAR(8) NOT NULL UNIQUE
+);
