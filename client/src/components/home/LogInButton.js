@@ -48,7 +48,13 @@ function LOgInButton(props) {
 					onClick={() => props.history.push("/mentor/login")}
 					sx={{ color: "primary.main" }}
 				>
-					<Avatar sx={{ color: "primary.main", bgcolor: "primary.white", marginRight: "0.3rem" }} />  Advisor
+					<Avatar sx={{ color: "primary.main", bgcolor: "primary.white", marginRight: "0.3rem" }} />  Mentor
+				</MenuItem>
+				<MenuItem
+					onClick={() => props.history.push("/admin/login")}
+					sx={{ color: "primary.main" }}
+				>
+					<Avatar sx={{ color: "primary.main", bgcolor: "primary.white", marginRight: "0.3rem" }} />  Admin
 				</MenuItem>
 			</Menu>
 		</div>
