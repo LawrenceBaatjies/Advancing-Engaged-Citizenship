@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 
 
-import Home from "./pages/Home";
+import Home from "./pages/home/Home";
 import StudentLogin from "./pages/login/StudentLogin";
 import MentorLogin from "./pages/login/MentorLogin";
 import AdminLogin from "./pages/login/AdminLogin";
@@ -105,6 +105,7 @@ const App = () => {
 								)
 							}
 						/>
+						<Route path="/*" render={(props) => <Home {...props} />} />
 					</Switch>
 				</div>
 			</Router>
