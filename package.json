@@ -68,21 +68,10 @@
 	},
 	"dependencies": {
 		"@babel/runtime": "^7.14.6",
-<<<<<<< HEAD
-=======
-		"@emotion/react": "^11.4.1",
-		"@emotion/styled": "^11.3.0",
-		"@mui/icons-material": "^5.0.0-rc.1",
-		"@mui/material": "^5.0.0-rc.1",
->>>>>>> e14c132cd0a4e308e48fb4bb38067de9b5efbdde
 		"dotenv": "^10.0.0",
 		"express": "^4.17.1",
 		"helmet": "^4.6.0",
 		"morgan": "^1.10.0",
-<<<<<<< HEAD
-=======
-		"notistack": "^1.0.10",
->>>>>>> e14c132cd0a4e308e48fb4bb38067de9b5efbdde
 		"pg": "^8.6.0"
 	},
 	"engines": {
