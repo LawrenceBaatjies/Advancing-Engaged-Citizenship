@@ -15,11 +15,11 @@ const getMentorById = "SELECT mentor_name FROM mentors WHERE mentor_id = $1";
 
 
 // Admin queries
-const checkAdminEmail = "SELECT * FROM admins WHERE admin_email = $1";
+const checkAdminEmail = "SELECT * FROM admin WHERE admin_email = $1";
 
-const registerAdmin = "INSERT INTO admins (admin_name, admin_email, admin_password) VALUES ($1, $2, $3) RETURNING *";
+const registerAdmin = "INSERT INTO admin (admin_name, admin_email, admin_password) VALUES ($1, $2, $3) RETURNING *";
 
-const getAdminById = "SELECT admin_name FROM admins WHERE admin_id = $1";
+const getAdminById = "SELECT admin_name FROM admin WHERE admin_id = $1";
 
 
 module.exports = {

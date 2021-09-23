@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -15,71 +16,70 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const MentorLogin = ({ setAuth }) => {
-	const [mentorEmail, setMentorEmail] = useState("");
-	const [mentorPassword, setMentorPassword] = useState("");
-	const [mentor, setMentor] = useState([]);
+	const [inputs, setInputs] = useState({
+		mentor_email: "",
+		mentor_password: "",
+	});
 
-	const handleEmail = (event) => {
-		event.preventDefault();
-		setMentorEmail(event.target.value);
-	};
+	const { mentor_email, mentor_password } = inputs;
 
-	const handlePassword = (event) => {
-		event.preventDefault();
-		setMentorPassword(event.target.value);
-	};
-
-	const handleSubmit = (event) => {
-		event.preventDefault();
-		const newMentor = ({
-			mentor_email: mentorEmail,
-			mentor_password: mentorPassword,
+	const handleChange = (e) => {
+		setInputs((input) => {
+			return { ...input, [e.target.name]: e.target.value };
 		});
+	};
 
-		setMentor([...mentor, newMentor]);
-		setMentorEmail("");
-		setMentorPassword("");
+	const handleSubmit = async (event) => {
+		event.preventDefault();
+
+		try {
+			const body = { mentor_email, mentor_password };
+
+			const response = await fetch("/auth/mentor/login", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(body),
+			});
+
+			const parseRes = await response.json();
+			if (parseRes.token) {
+				localStorage.setItem("token", parseRes.token);
+				setAuth(true);
+
+				toast.success("Logged in successfully!");
+			} else {
+				setAuth(false);
+				toast.error(parseRes);
+			}
+		} catch (error) {
+			console.error(error.message);
+		}
 	};
 
 	const Copyright = (props) => {
 		return (
-			<Typography variant="body2" color="text.secondary" align="center" {...props}>
+			<Typography
+				variant="body2"
+				color="text.secondary"
+				align="center"
+				{...props}
+			>
 				{"Copyright © "}
 				<Link color="inherit" href="">
 					The A Team
-				</Link>{""}
+				</Link>
+				{""}
 				{new Date().getFullYear()}
 				{"."}
 			</Typography>
 		);
 	};
 
-	const Mentor = (props) => {
-		return (
-			<div>
-				{mentor.map((mentor) => {
-					return (
-						<>
-							<Typography variant="body2" color="text.secondary" align="center" {...props}>
-								{`Mentor email: ${mentor.mentor_email}`}
-								<br />
-								{`Mentor password: ${mentor.mentor_password}`}
-							</Typography>
-						</>
-					);
-				}
-				)}
-			</div>
-		);
-	};
-
 	const theme = createTheme();
+
 
 	return (
 		<>
-			<div>	
-				<button onClick={() => setAuth(true)}>Log in</button>
-			</div>
 			<Link to="/">Home</Link>
 
 			<ThemeProvider theme={theme}>
@@ -109,23 +109,22 @@ const MentorLogin = ({ setAuth }) => {
 								fullWidth
 								id="email"
 								label="Email Address"
-								name="email"
+								name="mentor_email"
 								autoComplete="email"
-								autoFocus
-								value={mentorEmail}
-								onChange={handleEmail}
+								value={mentor_email}
+								onChange={(e) => handleChange(e)}
 							/>
 							<TextField
 								margin="normal"
 								required
 								fullWidth
-								name="password"
+								name="mentor_password"
 								label="Password"
 								type="password"
 								id="password"
 								autoComplete="current-password"
-								value={mentorPassword}
-								onChange={handlePassword}
+								value={mentor_password}
+								onChange={(e) => handleChange(e)}
 							/>
 							<FormControlLabel
 								control={<Checkbox value="remember" color="primary" />}
@@ -152,7 +151,6 @@ const MentorLogin = ({ setAuth }) => {
 							</Grid>
 						</Box>
 					</Box>
-					<Mentor />
 					<Copyright sx={{ mt: 8, mb: 4 }} />
 				</Container>
 			</ThemeProvider>
