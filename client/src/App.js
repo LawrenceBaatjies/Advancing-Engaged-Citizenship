@@ -6,7 +6,6 @@ import {
 	Redirect,
 } from "react-router-dom";
 
-
 import Home from "./pages/home/Home";
 import StudentLogin from "./pages/login/StudentLogin";
 import MentorLogin from "./pages/login/MentorLogin";
@@ -28,17 +27,7 @@ const App = () => {
 			<Router>
 				<div className="container">
 					<Switch>
-						<Route
-							exact
-							path="/"
-							render={(props) =>
-								!isAuthenticated ? (
-									<Home {...props} />
-								) : (
-									<Redirect to="/dashboard" />
-								)
-							}
-						/>
+						<Route exact path="/" render={(props) => <Home {...props} />} />
 						<Route
 							exact
 							path="/student/login"

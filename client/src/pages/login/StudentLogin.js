@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -15,61 +16,62 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const StudentLogin = ({ setAuth }) => {
-	const [studentEmail, setStudentEmail] = useState("");
-	const [studentPassword, setStudentPassword] = useState("");
-	const [student, setStudent] = useState([]);
+	const [inputs, setInputs] = useState({
+		student_email: "",
+		student_password: "",
+	});
 
-	const handleEmail = (event) => {
-		event.preventDefault();
-		setStudentEmail(event.target.value);
-	};
+	const { student_email, student_password } = inputs;
 
-	const handlePassword = (event) => {
-		event.preventDefault();
-		setStudentPassword(event.target.value);
-	};
-
-	const handleSubmit = (event) => {
-		event.preventDefault();
-		const newStudent = ({
-			student_email: studentEmail,
-			student_password: studentPassword,
+	const handleChange = (e) => {
+		setInputs((input) => {
+			return { ...input, [e.target.name]: e.target.value };
 		});
+	};
 
-		setStudent([...student, newStudent]);
-		setStudentEmail("");
-		setStudentPassword("");
+	const handleSubmit = async (event) => {
+		event.preventDefault();
+
+		try {
+			const body = { student_email, student_password };
+
+			const response = await fetch("/auth/student/login", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(body),
+			});
+
+			const parseRes = await response.json();
+			if (parseRes.token) {
+				localStorage.setItem("token", parseRes.token);
+				setAuth(true);
+
+				toast.success("Logged in successfully!");
+			} else {
+				setAuth(false);
+				toast.error(parseRes);
+			}
+		} catch (error) {
+			console.error(error.message);
+		}
 	};
 
 	const Copyright = (props) => {
 		return (
-			<Typography variant="body2" color="text.secondary" align="center" {...props}>
+			<Typography
+				variant="body2"
+				color="text.secondary"
+				align="center"
+				{...props}
+			>
 				{"Copyright © "}
 				<Link color="inherit" href="">
 					The A Team
-				</Link>{""}
+				</Link>
+				{""}
 				{new Date().getFullYear()}
 				{"."}
 			</Typography>
-		);
-	};
-
-	const Student = (props) => {
-		return (
-			<div>
-				{student.map((student) => {
-					return (
-						<>
-							<Typography variant="body2" color="text.secondary" align="center" {...props}>
-								{`Student email: ${student.student_email}`}
-								<br />
-								{`Student password: ${student.student_password}`}
-							</Typography>
-						</>
-					);
-				}
-				)}
-			</div>
 		);
 	};
 
@@ -77,10 +79,9 @@ const StudentLogin = ({ setAuth }) => {
 
 	return (
 		<>
-			<div>
-				<button onClick={() => setAuth(true)}>Log in</button>
-			</div>
-			<Link to="/">Home</Link>
+			<button>
+				<Link to="/">Home</Link>
+			</button>
 
 			<ThemeProvider theme={theme}>
 				<Container component="main" maxWidth="xs">
@@ -102,30 +103,31 @@ const StudentLogin = ({ setAuth }) => {
 						<Box
 							component="form"
 							onSubmit={handleSubmit}
-							noValidate sx={{ mt: 1 }}>
+							noValidate
+							sx={{ mt: 1 }}
+						>
 							<TextField
 								margin="normal"
 								required
 								fullWidth
 								id="email"
 								label="Email Address"
-								name="email"
+								name="student_email"
 								autoComplete="email"
-								autoFocus
-								value={studentEmail}
-								onChange={handleEmail}
+								value={student_email}
+								onChange={(e) => handleChange(e)}
 							/>
 							<TextField
 								margin="normal"
 								required
 								fullWidth
-								name="password"
+								name="student_password"
 								label="Password"
 								type="password"
 								id="password"
 								autoComplete="current-password"
-								value={studentPassword}
-								onChange={handlePassword}
+								value={student_password}
+								onChange={(e) => handleChange(e)}
 							/>
 							<FormControlLabel
 								control={<Checkbox value="remember" color="primary" />}
@@ -142,17 +144,13 @@ const StudentLogin = ({ setAuth }) => {
 							</Button>
 							<Grid container>
 								<Grid item xs>
-									<FormLink
-										href="#"
-										variant="body2"
-									>
+									<FormLink href="#" variant="body2">
 										Forgot password?
 									</FormLink>
 								</Grid>
 							</Grid>
 						</Box>
 					</Box>
-					<Student />
 					<Copyright sx={{ mt: 8, mb: 4 }} />
 				</Container>
 			</ThemeProvider>

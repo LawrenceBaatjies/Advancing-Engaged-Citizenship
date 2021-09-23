@@ -8,11 +8,11 @@ import theme from "./themes/theme";
 import App from "./App";
 
 ReactDOM.render(
-	<ThemeProvider theme={theme}>
-		<CssBaseline />
-		<BrowserRouter>
+	<BrowserRouter>
+		<ThemeProvider theme={theme}>
+			<CssBaseline />
 			<App />
-		</BrowserRouter>
-	</ThemeProvider>,
+		</ThemeProvider>
+	</BrowserRouter>,
 	document.getElementById("root")
 );
