@@ -15,6 +15,10 @@ import StudentDashboard from "./pages/dashboards/StudentDashboard";
 import MentorDashboard from "./pages/dashboards/MentorDashboard";
 import AdminDashboard from "./pages/dashboards/AdminDashboard";
 
+import StudentRegister from "./pages/register/StudentRegister";
+import MentorRegister from "./pages/register/MentorRegister";
+import AdminRegister from "./pages/register/AdminRegister";
+
 const App = () => {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -89,6 +93,39 @@ const App = () => {
 							render={(props) =>
 								isAuthenticated ? (
 									<AdminDashboard {...props} setAuth={setAuth} />
+								) : (
+									<Redirect to="/admin/login" />
+								)
+							}
+						/>
+						<Route
+							exact
+							path="/student/register"
+							render={(props) =>
+								!isAuthenticated ? (
+									<StudentRegister {...props} setAuth={setAuth} />
+								) : (
+									<Redirect to="/student/login" />
+								)
+							}
+						/>
+						<Route
+							exact
+							path="/mentor/register"
+							render={(props) =>
+								!isAuthenticated ? (
+									<MentorRegister {...props} setAuth={setAuth} />
+								) : (
+									<Redirect to="/mentor/login" />
+								)
+							}
+						/>
+						<Route
+							exact
+							path="/admin/register"
+							render={(props) =>
+								!isAuthenticated ? (
+									<AdminRegister {...props} setAuth={setAuth} />
 								) : (
 									<Redirect to="/admin/login" />
 								)

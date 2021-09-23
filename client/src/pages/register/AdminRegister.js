@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -15,41 +14,36 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-const MentorLogin = ({ setAuth }) => {
+const AdminRegister = ({ setAuth }) => {
 	const [inputs, setInputs] = useState({
-		mentor_email: "",
-		mentor_password: "",
+		admin_name: "",
+		admin_email: "",
+		admin_password: "",
 	});
 
-	const { mentor_email, mentor_password } = inputs;
+	const { admin_name, admin_email, admin_password } = inputs;
 
 	const handleChange = (e) => {
-		setInputs((input) => {
-			return { ...input, [e.target.name]: e.target.value };
-		});
+		setInputs({ ...inputs, [e.target.name]: e.target.value });
 	};
 
-	const handleSubmit = async (event) => {
-		event.preventDefault();
+	const handleSubmit = async (e) => {
+		e.preventDefault();
 
 		try {
-			const body = { mentor_email, mentor_password };
+			const body = { admin_name, admin_email, admin_password };
 
-			const response = await fetch("/auth/mentor/login", {
+			const response = await fetch("/auth/admin/register", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(body),
 			});
-
 			const parseRes = await response.json();
-			if (parseRes.token) {
-				localStorage.setItem("token", parseRes.token);
-				setAuth(true);
 
-				toast.success("Logged in successfully!");
-			} else {
-				setAuth(false);
-				toast.error(parseRes);
+			localStorage.setItem("token", parseRes.token);
+
+			if (parseRes.token) {
+				setAuth(true);
 			}
 		} catch (error) {
 			console.error(error.message);
@@ -77,7 +71,6 @@ const MentorLogin = ({ setAuth }) => {
 
 	const theme = createTheme();
 
-
 	return (
 		<>
 			<Link to="/">Home</Link>
@@ -97,33 +90,47 @@ const MentorLogin = ({ setAuth }) => {
 							<LockOutlinedIcon />
 						</Avatar>
 						<Typography component="h1" variant="h5">
-							Mentor log in
+							Admin Register
 						</Typography>
 						<Box
 							component="form"
 							onSubmit={handleSubmit}
-							noValidate sx={{ mt: 1 }}>
+							noValidate
+							sx={{ mt: 1 }}
+						>
+							<TextField
+								margin="normal"
+								required
+								fullWidth
+								id="name"
+								label="Name"
+								name="admin_name"
+								autoComplete="name"
+								value={admin_name}
+								onChange={(e) => handleChange(e)}
+							/>
+
 							<TextField
 								margin="normal"
 								required
 								fullWidth
 								id="email"
 								label="Email Address"
-								name="mentor_email"
+								name="admin_email"
 								autoComplete="email"
-								value={mentor_email}
+								value={admin_email}
 								onChange={(e) => handleChange(e)}
 							/>
 							<TextField
 								margin="normal"
 								required
 								fullWidth
-								name="mentor_password"
+								name="admin_password"
 								label="Password"
 								type="password"
 								id="password"
 								autoComplete="current-password"
-								value={mentor_password}
+								value={admin_password}
 								onChange={(e) => handleChange(e)}
 							/>
 							<FormControlLabel
@@ -141,10 +148,7 @@ const MentorLogin = ({ setAuth }) => {
 							</Button>
 							<Grid container>
 								<Grid item xs>
-									<FormLink
-										href="#"
-										variant="body2"
-									>
+									<FormLink href="#" variant="body2">
 										Forgot password?
 									</FormLink>
 								</Grid>
@@ -158,4 +162,4 @@ const MentorLogin = ({ setAuth }) => {
 	);
 };
 
-export default MentorLogin;
+export default AdminRegister;

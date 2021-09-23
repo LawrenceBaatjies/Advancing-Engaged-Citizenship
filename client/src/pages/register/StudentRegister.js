@@ -15,55 +15,40 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const StudentRegister = ({ setAuth }) => {
-  const [studentName, setStudentName] = useState("");
-  const [studentSurname, setStudentSurname] = useState("");
-  const [studentNumber, setStudentNumber] = useState("");
-  const [studentEmail, setStudentEmail] = useState("");
-  const [studentPassword, setStudentPassword] = useState("");
-  const [student, setStudent] = useState([]);
+  const [inputs, setInputs] = useState({
+		student_name: "",
+		student_email: "",
+		student_password: "",
+	});
 
-  const handleStudentName = (event) => {
-    event.preventDefault();
-    setStudentName(event.target.value);
-  };
+	const { student_name, student_email, student_password } = inputs;
 
-  const handleStudentSurname = (event) => {
-    event.preventDefault();
-    setStudentSurname(event.target.value);
-  };
+	const handleChange = (e) => {
+		setInputs({ ...inputs, [e.target.name]: e.target.value });
+	};
 
-  const handleStudentNumber = (event) => {
-    event.preventDefault();
-    setStudentNumber(event.target.value);
-  };
+	const handleSubmit = async (e) => {
+		e.preventDefault();
 
-  const handleStudentEmail = (event) => {
-    event.preventDefault();
-    setStudentEmail(event.target.value);
-  };
+		try {
+			const body = { student_name, student_email, student_password };
 
-  const handlePassword = (event) => {
-    event.preventDefault();
-    setStudentPassword(event.target.value);
-  };
+			const response = await fetch("/auth/student/register", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(body),
+			});
+			const parseRes = await response.json();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const newStudent = ({
-      student_name: studentName,
-      student_surname: studentSurname,
-      student_number: studentNumber,
-      student_email: studentEmail,
-      student_password: studentPassword,
-    });
+			localStorage.setItem("token", parseRes.token);
 
-    setStudent([...student, newStudent]);
-    setStudentName("");
-    setStudentSurname("");
-    setStudentName("");
-    setStudentEmail("");
-    setStudentPassword("");
-  };
+			if (parseRes.token) {
+			setAuth(true);
+			}
+		} catch (error) {
+			console.error(error.message);
+		}
+	};
 
   const Copyright = (props) => {
     return (
@@ -78,40 +63,10 @@ const StudentRegister = ({ setAuth }) => {
     );
   };
 
-  const Student = (props) => {
-    return (
-      <div>
-        {student.map((student) => {
-          return (
-            <>
-              <Typography variant="body2" color="text.secondary" align="center" {...props}>
-                {`Student email: ${student.student_email}`}
-                <br />
-                {`Student password: ${student.student_password}`}
-              </Typography>
-            </>
-          );
-        }
-        )}
-      </div>
-    );
-  };
-
   const theme = createTheme();
 
   return (
     <>
-      <div>
-        <Typography component="h1" variant="h5">
-          Advancing Engaged Citizenship
-        </Typography>
-        <br />
-        <br />
-        <Typography variant="h6" component="h2">
-          Student Register
-        </Typography>
-        <button onClick={() => setAuth(true)}>Register</button>
-      </div>
       <Link to="/">Home</Link>
 
       <ThemeProvider theme={theme}>
@@ -142,37 +97,10 @@ const StudentRegister = ({ setAuth }) => {
                 fullWidth
                 id="name"
                 label="Name"
-                name="name"
+                name="student_name"
                 autoComplete="name"
-                autoFocus
-                value={studentName}
-                onChange={handleStudentName}
-              />
-              {/* STUDENT SURNAME */}
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="surname"
-                label="Surname"
-                name="surname"
-                autoComplete="surname"
-                autoFocus
-                value={studentSurname}
-                onChange={handleStudentSurname}
-              />
-              {/* STUDENT NUMBER */}
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="number"
-                label="Number"
-                name="number"
-                autoComplete="number"
-                autoFocus
-                value={studentNumber}
-                onChange={handleStudentNumber}
+                value={student_name}
+                onChange={(e) => handleChange(e)}
               />
               {/* STUDENT EMAIL */}
               <TextField
@@ -181,23 +109,22 @@ const StudentRegister = ({ setAuth }) => {
                 fullWidth
                 id="email"
                 label="Email Address"
-                name="email"
+                name="student_email"
                 autoComplete="email"
-                autoFocus
-                value={studentEmail}
-                onChange={handleStudentEmail}
+                value={student_email}
+                onChange={(e) => handleChange(e)}
               />
               <TextField
                 margin="normal"
                 required
                 fullWidth
-                name="password"
+                name="student_password"
                 label="Password"
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                value={studentPassword}
-                onChange={handlePassword}
+                value={student_password}
+                onChange={(e) => handleChange(e)}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
@@ -224,7 +151,6 @@ const StudentRegister = ({ setAuth }) => {
               </Grid>
             </Box>
           </Box>
-          <Student />
           <Copyright sx={{ mt: 8, mb: 4 }} />
         </Container>
       </ThemeProvider>
