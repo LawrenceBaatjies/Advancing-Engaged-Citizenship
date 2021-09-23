@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -15,61 +16,62 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const AdminLogin = ({ setAuth }) => {
-	const [adminEmail, setAdminEmail] = useState("");
-	const [adminPassword, setAdminPassword] = useState("");
-	const [admin, setAdmin] = useState([]);
+	const [inputs, setInputs] = useState({
+		admin_email: "",
+		admin_password: "",
+	});
 
-	const handleEmail = (event) => {
-		event.preventDefault();
-		setAdminEmail(event.target.value);
-	};
+	const { admin_email, admin_password } = inputs;
 
-	const handlePassword = (event) => {
-		event.preventDefault();
-		setAdminPassword(event.target.value);
-	};
-
-	const handleSubmit = (event) => {
-		event.preventDefault();
-		const newAdmin = ({
-			admin_email: adminEmail,
-			admin_password: adminPassword,
+	const handleChange = (e) => {
+		setInputs((input) => {
+			return { ...input, [e.target.name]: e.target.value };
 		});
+	};
 
-		setAdmin([...admin, newAdmin]);
-		setAdminEmail("");
-		setAdminPassword("");
+	const handleSubmit = async (event) => {
+		event.preventDefault();
+
+		try {
+			const body = { admin_email, admin_password };
+
+			const response = await fetch("/auth/admin/login", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(body),
+			});
+
+			const parseRes = await response.json();
+			if (parseRes.token) {
+				localStorage.setItem("token", parseRes.token);
+				setAuth(true);
+
+				toast.success("Logged in successfully!");
+			} else {
+				setAuth(false);
+				toast.error(parseRes);
+			}
+		} catch (error) {
+			console.error(error.message);
+		}
 	};
 
 	const Copyright = (props) => {
 		return (
-			<Typography variant="body2" color="text.secondary" align="center" {...props}>
+			<Typography
+				variant="body2"
+				color="text.secondary"
+				align="center"
+				{...props}
+			>
 				{"Copyright © "}
 				<Link color="inherit" href="">
 					The A Team
-				</Link>{""}
+				</Link>
+				{""}
 				{new Date().getFullYear()}
 				{"."}
 			</Typography>
-		);
-	};
-
-	const Admin = (props) => {
-		return (
-			<div>
-				{admin.map((admin) => {
-					return (
-						<>
-							<Typography variant="body2" color="text.secondary" align="center" {...props}>
-								{`Admin email: ${admin.admin_email}`}
-								<br />
-								{`Admin password: ${admin.admin_password}`}
-							</Typography>
-						</>
-					);
-				}
-				)}
-			</div>
 		);
 	};
 
@@ -77,9 +79,6 @@ const AdminLogin = ({ setAuth }) => {
 
 	return (
 		<>
-			<div>
-				<button onClick={() => setAuth(true)}>Log in</button>
-			</div>
 			<Link to="/">Home</Link>
 
 			<ThemeProvider theme={theme}>
@@ -109,23 +108,22 @@ const AdminLogin = ({ setAuth }) => {
 								fullWidth
 								id="email"
 								label="Email Address"
-								name="email"
+								name="admin_email"
 								autoComplete="email"
-								autoFocus
-								value={adminEmail}
-								onChange={handleEmail}
+								value={admin_email}
+								onChange={(e) => handleChange(e)}
 							/>
 							<TextField
 								margin="normal"
 								required
 								fullWidth
-								name="password"
+								name="admin_password"
 								label="Password"
 								type="password"
 								id="password"
 								autoComplete="current-password"
-								value={adminPassword}
-								onChange={handlePassword}
+								value={admin_password}
+								onChange={(e) => handleChange(e)}
 							/>
 							<FormControlLabel
 								control={<Checkbox value="remember" color="primary" />}
@@ -152,7 +150,6 @@ const AdminLogin = ({ setAuth }) => {
 							</Grid>
 						</Box>
 					</Box>
-					<Admin />
 					<Copyright sx={{ mt: 8, mb: 4 }} />
 				</Container>
 			</ThemeProvider>
