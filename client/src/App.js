@@ -5,7 +5,8 @@ import {
 	Switch,
 	Redirect,
 } from "react-router-dom";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import Home from "./pages/home/Home";
 import StudentLogin from "./pages/login/StudentLogin";
@@ -15,6 +16,8 @@ import AdminLogin from "./pages/login/AdminLogin";
 import StudentDashboard from "./pages/dashboards/StudentDashboard";
 import MentorDashboard from "./pages/dashboards/MentorDashboard";
 import AdminDashboard from "./pages/dashboards/AdminDashboard";
+
+toast.configure();
 
 const App = () => {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
