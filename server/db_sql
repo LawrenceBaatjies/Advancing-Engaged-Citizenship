@@ -1,60 +1,47 @@
-CREATE TABLE admin (                 
-    admin_id             INT NOT NULL ,
-    admin_name           VARCHAR(63) NOT NULL,
-    admin_phone          VARCHAR(15)  NOT NULL,
-    admin_email          VARCHAR(63) NOT NULL,
-    admin_password       VARCHAR(8) NOT NULL UNIQUE
-    
-);
-
-
-
-CREATE  TABLE  mentor (	                                
-    mentor_id               INT NOT NULL ,
-    mentor_name         	VARCHAR(63) NOT NULL UNIQUE,
-    mentor_phone  	        VARCHAR(15) NOT NULL,
-    mentor_email          	VARCHAR(63) NOT NULL,
-    mentor_password       	VARCHAR(8) NOT NULL UNIQUE
-    
-);
-
-
-
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+​
 CREATE TABLE students (
-    student_id        	         INT NOT NULL ,
-    student_name 		         VARCHAR(63) NOT NULL,
-    student_surname              VARCHAR(63) NOT NULL,
-    student_phone                VARCHAR(15)  NOT NULL,
-    student_email                VARCHAR(63) NOT NULL,
-    student_password             VARCHAR(8) NOT NULL UNIQUE
-    
-);
+  
+	student_id		    uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+	student_name	    VARCHAR(255) NOT NULL,
+	student_email	    VARCHAR(255) UNIQUE NOT NULL,
+	student_password	VARCHAR(255) NOT NULL
+	);
+	
+	CREATE TABLE mentors (
 
-CREATE TABLE student_profile (
+	mentor_id		uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+	mentor_name	    VARCHAR(255) NOT NULL,
+	mentor_email	VARCHAR(255) UNIQUE NOT NULL,
+	mentor_password	VARCHAR(255) NOT NULL
+	);
+	
+	CREATE TABLE admin (
 
+	admin_id		uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+	admin_name      VARCHAR(255) NOT NULL,
+	admin_email     VARCHAR(255) UNIQUE NOT NULL,
+	admin_password	VARCHAR(255) NOT NULL
+
+    );
+CREATE TABLE profile (
+
+student_id		                uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
 student_name_id                VARCHAR(63) NOT NULL,
 student_surname                VARCHAR(63) NOT NULL,
 student_bio                    IN VARCHAR(500),
-
+FOREIGN KEY(student_id)
 );
 
-CREATE TABLE student_profile_images (
 
- [image name] nvarchar(100),
- [image] varbinary(max)
-);
 
 CREATE TABLE mentor_profile (
 
+mentor_profile_id             uuid PRIMARY KEY DEFAULT uuid_generate_v4(),    
 mentor_name_id                VARCHAR(63) NOT NULL,
 mentor_surname                VARCHAR(63) NOT NULL,
 mentor_bio                    IN VARCHAR(500),
 
 );
 
-CREATE TABLE mentor_profile_images (
-
- [image name] nvarchar(100),
- [image] varbinary(max)
-);
 
